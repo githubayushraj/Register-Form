@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compiled and minified CSS materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        body {
+            background: url('img/RegisterPage.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .input-text-color {
+            color: #000; /* Change this to your desired text color */
+        }
+        .message.success {
+            color: green;
+        }
+        .message.error {
+            color: red;
+        }
+        .loader {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col m6 offset-m3">
+                <div class="card-content center-align">
+                    <h3 style="color: #8c9eff;">Register Here</h3>
+                    <div class="form">
+                        <form action="Register" method="post" id="myform" enctype="multipart/form-data">
+                            <input type="text" name="user_name" placeholder="Enter user name" class="input-text-color" required>
+                            <input type="email" name="user_email" placeholder="Enter user email" class="input-text-color" required>
+                            <input type="password" name="user_password" placeholder="Enter user password" class="input-text-color" required>
+
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input name="user_img" type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload a file">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn #03a9f4 light-blue" style="margin-top: 10px">Submit</button>
+                        </form>
+                    </div>
+                    <div class="loader center-align" style="display: none">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-blue">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-red">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-yellow">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+
+                            <div class="spinner-layer spinner-green">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                                <h5>Please wait...</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="msg" class="message"></div>  <!-- Added for displaying messages -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myform").on('submit', function (event) {
+                event.preventDefault();
+                let formData = new FormData(this);
+                
+                $(".loader").show(); // Show loader
+                $(".form").hide(); // Hide form
+
+                $.ajax({
+                    url: "Register",
+                    data: formData,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (data, textStatus, jqXHR) {
+                        $(".loader").hide();
+                        $(".form").show();
+                        if (data.trim() === 'successful') {
+                            $('#msg').html("Successfully Registered...").removeClass('error').addClass('success');
+                        } else {
+                            $('#msg').html("Something went wrong").removeClass('success').addClass('error');
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $(".loader").hide();
+                        $(".form").show();
+                        $('#msg').html("Something went wrong.....").removeClass('success').addClass('error');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
